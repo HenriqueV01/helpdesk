@@ -1,8 +1,10 @@
 package com.project.helpdesk.domain;
 
 import com.project.helpdesk.domain.enums.Perfil;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -16,6 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@DiscriminatorValue("CLIENTE")
 public class Cliente extends Pessoa {
     @Serial
     private static final long serialVersionUID = 1L;

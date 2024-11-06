@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Data
 @EqualsAndHashCode
 @Entity
+@Table(schema = "helpdesk", name = "chamado")
 public class Chamado implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
