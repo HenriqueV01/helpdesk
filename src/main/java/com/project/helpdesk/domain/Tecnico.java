@@ -19,7 +19,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@DiscriminatorValue("TECNICO")
+@DiscriminatorValue("tecnico")
 public class Tecnico extends Pessoa{
     @Serial
     private static final long serialVersionUID = 1L;

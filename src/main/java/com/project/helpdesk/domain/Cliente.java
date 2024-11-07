@@ -18,7 +18,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-@DiscriminatorValue("CLIENTE")
+@DiscriminatorValue("cliente")
 public class Cliente extends Pessoa {
     @Serial
     private static final long serialVersionUID = 1L;
