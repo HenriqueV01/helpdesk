@@ -1,5 +1,6 @@
 package com.project.helpdesk.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.helpdesk.domain.enums.Perfil;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -24,6 +25,7 @@ public class Tecnico extends Pessoa{
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "tecnico")
     private List<Chamado> chamados = new ArrayList<>();
 
