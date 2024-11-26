@@ -6,6 +6,7 @@ import com.project.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,5 +18,9 @@ public class TecnicoService {
         Optional<Tecnico> tec = repository.findById(id);
         /*return tec.orElse(null);*/
         return tec.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id));
+    }
+
+    public List<Tecnico> findAll() {
+        return repository.findAll();
     }
 }
