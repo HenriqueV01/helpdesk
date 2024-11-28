@@ -1,6 +1,7 @@
 package com.project.helpdesk.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.helpdesk.domain.dtos.TecnicoDTO;
 import com.project.helpdesk.domain.enums.Perfil;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
@@ -14,6 +15,7 @@ import lombok.Setter;
 import java.io.Serial;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -39,4 +41,13 @@ public class Tecnico extends Pessoa{
         addPerfil(Perfil.CLIENTE);
     }
 
+    public Tecnico(TecnicoDTO tecnicoDTO) {
+        this.id = tecnicoDTO.getId();
+        this.nome = tecnicoDTO.getNome();
+        this.cpf = tecnicoDTO.getCpf();
+        this.email = tecnicoDTO.getEmail();
+        this.senha = tecnicoDTO.getSenha();
+        this.perfis = tecnicoDTO.getPerfis().stream().map(Perfil::getCodigo).collect(Collectors.toSet());
+        this.dataCriacao = tecnicoDTO.getDataCriacao();
+    }
 }
