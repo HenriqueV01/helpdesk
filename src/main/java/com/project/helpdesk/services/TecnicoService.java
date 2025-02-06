@@ -50,4 +50,14 @@ public class TecnicoService {
     }
 
 
+    public Tecnico update(Integer id, TecnicoDTO tecnicoDTO) {
+        tecnicoDTO.setId(id);
+
+        Tecnico oldTec = findById(id);
+        validaPorCpfEEmail(tecnicoDTO);
+
+        oldTec = new Tecnico(tecnicoDTO);
+        return repository.save(oldTec);
+
+    }
 }

@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -28,6 +29,7 @@ public abstract class Pessoa implements Serializable {
     protected Integer id;
     protected String nome;
 
+    @CPF
     @Column(unique = true)
     protected String cpf;
     @Column(unique = true)

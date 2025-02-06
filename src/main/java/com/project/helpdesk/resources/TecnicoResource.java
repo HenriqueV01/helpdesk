@@ -42,6 +42,15 @@ public class TecnicoResource {
 
     }
 
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<TecnicoDTO> update(@Valid @PathVariable Integer id, @RequestBody TecnicoDTO tecnicoDTO){
+        Tecnico newTec = service.update(id, tecnicoDTO);
+
+        return ResponseEntity.ok().body(new TecnicoDTO(newTec));
+
+
+    }
+
 
 
 
