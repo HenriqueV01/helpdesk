@@ -39,16 +39,18 @@ public class TecnicoResource {
         Tecnico newTec = service.create(tecnicoDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(newTec.getId()).toUri();
         return ResponseEntity.created(uri).build();
-
     }
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<TecnicoDTO> update(@Valid @PathVariable Integer id, @RequestBody TecnicoDTO tecnicoDTO){
         Tecnico newTec = service.update(id, tecnicoDTO);
-
         return ResponseEntity.ok().body(new TecnicoDTO(newTec));
+    }
 
-
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<TecnicoDTO> delete(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 

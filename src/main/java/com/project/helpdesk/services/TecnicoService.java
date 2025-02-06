@@ -52,12 +52,17 @@ public class TecnicoService {
 
     public Tecnico update(Integer id, TecnicoDTO tecnicoDTO) {
         tecnicoDTO.setId(id);
-
         Tecnico oldTec = findById(id);
         validaPorCpfEEmail(tecnicoDTO);
-
         oldTec = new Tecnico(tecnicoDTO);
         return repository.save(oldTec);
+    }
 
+    public void delete(Integer id) {
+        Tecnico tec = findById(id);
+        if(!tec.getChamados().isEmpty()){
+            throw new DataIntegrityViolationException("O técnico possui ordens de servicço e não pode ser deletado!");
+        }
+        repository.delete(tec);
     }
 }
