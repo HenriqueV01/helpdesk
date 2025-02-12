@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/chamados")
 public class ChamadoResource {
@@ -24,6 +26,13 @@ public class ChamadoResource {
 
     }
 
+    @GetMapping
+    public ResponseEntity<List<ChamadoDTO>> findAll(){
+        List<Chamado> list = service.findAll();
+        List<ChamadoDTO> listDTO = list.stream().map(ChamadoDTO::new).toList();
+        return ResponseEntity.ok().body(listDTO);
+
+    }
 
 
 }
