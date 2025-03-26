@@ -1,8 +1,10 @@
 package com.project.helpdesk.resources;
 
 import com.project.helpdesk.domain.user.AuthenticationDTO;
+import com.project.helpdesk.domain.user.LoginResponseDTO;
 import com.project.helpdesk.domain.user.RegisterDTO;
 import com.project.helpdesk.domain.user.User;
+import com.project.helpdesk.infra.security.TokenService;
 import com.project.helpdesk.repositories.user.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +25,17 @@ public class AuthenticationResource {
     private AuthenticationManager authenticationManager;
     @Autowired
     private UserRepository repository;
+    @Autowired
+    TokenService tokenService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        return ResponseEntity.ok().build();
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
 
     }
 
@@ -45,8 +51,5 @@ public class AuthenticationResource {
         return ResponseEntity.ok().build();
 
     }
-
-
-
 
 }
