@@ -1,6 +1,7 @@
 package com.project.helpdesk.resources;
 
 import com.project.helpdesk.domain.Tecnico;
+import com.project.helpdesk.domain.dtos.ResponseTecnicoDTO;
 import com.project.helpdesk.domain.dtos.TecnicoDTO;
 import com.project.helpdesk.services.TecnicoService;
 import jakarta.validation.Valid;
@@ -27,10 +28,10 @@ public class TecnicoResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<TecnicoDTO>> findAll(){
+    public ResponseEntity<List<ResponseTecnicoDTO>> findAll(){
         List<Tecnico> list = service.findAll();
-        //List<TecnicoDTO> listDTO = list.stream().map(tec -> new TecnicoDTO(tec)).collect(Collectors.toList());
-        List<TecnicoDTO> listDTO = list.stream().map(TecnicoDTO::new).toList();
+        //List<ResponseTecnicoDTO> listDTO = list.stream().map(tec -> new ResponseTecnicoDTO(tec)).collect(Collectors.toList());
+        List<ResponseTecnicoDTO> listDTO = list.stream().map(ResponseTecnicoDTO::new).toList();
         return ResponseEntity.ok().body(listDTO);
     }
 
