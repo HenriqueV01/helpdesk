@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @Profile("dev")
@@ -16,6 +18,13 @@ public class DevConfig {
 
     @Value("${spring.jpa.hibernate.ddl-auto}")
     private String value;
+
+    //PODE DELETAR ABAIXO:
+    /*@Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }*/
+    //FIM.
 
     /*@PostConstruct*/
     @Bean

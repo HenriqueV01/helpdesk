@@ -8,6 +8,7 @@ import com.project.helpdesk.repositories.TecnicoRepository;
 import com.project.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.project.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class TecnicoService {
     private TecnicoRepository repository;
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Tecnico findById(Integer id){
         Optional<Tecnico> tec = repository.findById(id);
@@ -33,6 +36,7 @@ public class TecnicoService {
 
     public Tecnico create(TecnicoDTO tecnicoDTO) {
         tecnicoDTO.setId(null);
+        tecnicoDTO.setSenha(encoder.encode(tecnicoDTO.getSenha()));
         validaPorCpfEEmail(tecnicoDTO);
         return repository.save(new Tecnico(tecnicoDTO));
     }
@@ -46,9 +50,7 @@ public class TecnicoService {
         if(pessoa.isPresent() && !Objects.equals(pessoa.get().getId(), tecnicoDTO.getId())){
             throw new DataIntegrityViolationException("Email já cadastrado no sistema!");
         }
-
     }
-
 
     public Tecnico update(Integer id, TecnicoDTO tecnicoDTO) {
         tecnicoDTO.setId(id);

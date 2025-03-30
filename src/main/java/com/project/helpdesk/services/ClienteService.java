@@ -8,6 +8,7 @@ import com.project.helpdesk.repositories.ClienteRepository;
 import com.project.helpdesk.services.exceptions.DataIntegrityViolationException;
 import com.project.helpdesk.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,8 @@ public class ClienteService {
     private ClienteRepository repository;
     @Autowired
     private PessoaRepository pessoaRepository;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
     public Cliente findById(Integer id){
         Optional<Cliente> cli = repository.findById(id);
@@ -31,30 +34,30 @@ public class ClienteService {
         return repository.findAll();
     }
 
-    public Cliente create(ClienteDTO ClienteDTO) {
-        ClienteDTO.setId(null);
-        validaPorCpfEEmail(ClienteDTO);
-        return repository.save(new Cliente(ClienteDTO));
+    public Cliente create(ClienteDTO clienteDTO) {
+        clienteDTO.setId(null);
+        clienteDTO.setSenha(encoder.encode(clienteDTO.getSenha()));
+        validaPorCpfEEmail(clienteDTO);
+        return repository.save(new Cliente(clienteDTO));
     }
 
-    private void validaPorCpfEEmail(ClienteDTO ClienteDTO) {
-        Optional<Pessoa> pessoa = pessoaRepository.findByCpf(ClienteDTO.getCpf());
-        if(pessoa.isPresent() && !Objects.equals(pessoa.get().getId(), ClienteDTO.getId())){
+    private void validaPorCpfEEmail(ClienteDTO clienteDTO) {
+        Optional<Pessoa> pessoa = pessoaRepository.findByCpf(clienteDTO.getCpf());
+        if(pessoa.isPresent() && !Objects.equals(pessoa.get().getId(), clienteDTO.getId())){
             throw new DataIntegrityViolationException("CPF já cadastrado no sistema!");
         }
-        pessoa = pessoaRepository.findByEmail(ClienteDTO.getEmail());
-        if(pessoa.isPresent() && !Objects.equals(pessoa.get().getId(), ClienteDTO.getId())){
+        pessoa = pessoaRepository.findByEmail(clienteDTO.getEmail());
+        if(pessoa.isPresent() && !Objects.equals(pessoa.get().getId(), clienteDTO.getId())){
             throw new DataIntegrityViolationException("Email já cadastrado no sistema!");
         }
 
     }
 
-
-    public Cliente update(Integer id, ClienteDTO ClienteDTO) {
-        ClienteDTO.setId(id);
+    public Cliente update(Integer id, ClienteDTO clienteDTO) {
+        clienteDTO.setId(id);
         Cliente oldCli = findById(id);
-        validaPorCpfEEmail(ClienteDTO);
-        oldCli = new Cliente(ClienteDTO);
+        validaPorCpfEEmail(clienteDTO);
+        oldCli = new Cliente(clienteDTO);
         return repository.save(oldCli);
     }
 

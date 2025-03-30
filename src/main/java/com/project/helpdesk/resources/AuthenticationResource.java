@@ -26,7 +26,11 @@ public class AuthenticationResource {
     @Autowired
     private UserRepository repository;
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
@@ -43,7 +47,7 @@ public class AuthenticationResource {
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
-        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        String encryptedPassword = encoder.encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, data.role());
 
         this.repository.save(newUser);
